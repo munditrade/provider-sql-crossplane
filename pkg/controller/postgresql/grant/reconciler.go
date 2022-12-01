@@ -186,7 +186,7 @@ func addAllToSchema(schema string, role string) []xsql.Query {
 	sc := pq.QuoteIdentifier(schema)
 
 	return []xsql.Query{
-		{String: fmt.Sprintf("GRANT ALL ON SCHEMA %s” TO %s",
+		{String: fmt.Sprintf("GRANT ALL ON SCHEMA %s TO %s",
 			sc,
 			ro,
 		)},
@@ -414,6 +414,14 @@ func deleteGrantQuery(gp v1alpha1.GrantParameters, q *xsql.Query) error {
 		)
 		return nil
 	case roleDatabase:
+		q.String = fmt.Sprintf("REVOKE %s ON DATABASE %s FROM %s",
+			strings.Join(gp.Privileges.ToStringSlice(), ","),
+			pq.QuoteIdentifier(*gp.Database),
+			ro,
+		)
+		return nil
+	//TODO revoke when resource is deleted
+	case roleSchema:
 		q.String = fmt.Sprintf("REVOKE %s ON DATABASE %s FROM %s",
 			strings.Join(gp.Privileges.ToStringSlice(), ","),
 			pq.QuoteIdentifier(*gp.Database),
