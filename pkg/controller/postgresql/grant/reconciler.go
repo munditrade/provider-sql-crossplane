@@ -48,14 +48,15 @@ const (
 	errNoSecretRef  = "ProviderConfig does not reference a credentials Secret"
 	errGetSecret    = "cannot get credentials Secret"
 
-	errNotGrant     = "managed resource is not a Grant custom resource"
-	errSelectGrant  = "cannot select grant"
-	errCreateGrant  = "cannot create grant"
-	errRevokeGrant  = "cannot revoke grant"
-	errNoRole       = "role not passed or could not be resolved"
-	errNoDatabase   = "database not passed or could not be resolved"
-	errNoPrivileges = "privileges not passed"
-	errUnknownGrant = "cannot identify grant type based on passed params"
+	errNotGrant                  = "managed resource is not a Grant custom resource"
+	errSelectGrant               = "cannot select grant"
+	errCreateGrant               = "cannot create grant"
+	errRevokeGrant               = "cannot revoke grant"
+	errNoRole                    = "role not passed or could not be resolved"
+	errNoDatabase                = "database not passed or could not be resolved"
+	errNoPrivileges              = "privileges not passed"
+	errNoExistingSchemaPrivilege = "no exist schema privilege only support ALL and READ_ONLY"
+	errUnknownGrant              = "cannot identify grant type based on passed params"
 
 	errInvalidParams = "invalid parameters for grant type %s"
 
@@ -134,9 +135,91 @@ type external struct {
 type grantType string
 
 const (
-	roleMember   grantType = "ROLE_MEMBER"
-	roleDatabase grantType = "ROLE_DATABASE"
+	roleMember              grantType = "ROLE_MEMBER"
+	roleDatabase            grantType = "ROLE_DATABASE"
+	roleSchema              grantType = "ROLE_SCHEMA"
+	allSchemaPrivilege                = "ALL"
+	readOnlySchemaPrivilege           = "READ_ONLY"
 )
+
+func grantToSchema(grantType v1alpha1.GrantPrivilege, schema string, role string) []xsql.Query {
+	if grantType == allSchemaPrivilege {
+		addAllToSchema(schema, role)
+	}
+	if grantType == readOnlySchemaPrivilege {
+		addReadOnlyToSchema(schema, role)
+	}
+
+	return []xsql.Query{}
+}
+
+func addReadOnlyToSchema(schema string, role string) []xsql.Query {
+	ro := pq.QuoteIdentifier(role)
+	sc := pq.QuoteIdentifier(schema)
+
+	return []xsql.Query{
+		{String: fmt.Sprintf("GRANT USAGE ON SCHEMA %s” TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("GRANT SELECT ON ALL TABLES IN SCHEMA %s TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("GRANT USAGE ON ALL SEQUENCES IN SCHEMA %s TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA %s TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("ALTER DEFAULT PRIVILEGES GRANT SELECT ON TABLES TO %s",
+			ro,
+		)},
+		{String: "REVOKE ALL ON SCHEMA public FROM public"},
+	}
+}
+
+func addAllToSchema(schema string, role string) []xsql.Query {
+	ro := pq.QuoteIdentifier(role)
+	sc := pq.QuoteIdentifier(schema)
+
+	return []xsql.Query{
+		{String: fmt.Sprintf("GRANT ALL ON SCHEMA %s” TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA %s TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("GRANT ALL ON ALL SEQUENCES IN SCHEMA %s TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("GRANT ALL ON ALL FUNCTIONS IN SCHEMA %s TO %s",
+			sc,
+			ro,
+		)},
+		{String: fmt.Sprintf("ALTER DEFAULT PRIVILEGES GRANT ALL ON TABLES TO %s",
+			ro,
+		)},
+	}
+}
+
+func identifySchemaGrant(privileges v1alpha1.GrantPrivileges) (v1alpha1.GrantPrivilege, error) {
+	for _, p := range privileges {
+		if p == allSchemaPrivilege {
+			return allSchemaPrivilege, nil
+		}
+		if p == readOnlySchemaPrivilege {
+			return readOnlySchemaPrivilege, nil
+		}
+	}
+
+	return "", errors.New(errNoExistingSchemaPrivilege)
+}
 
 func identifyGrantType(gp v1alpha1.GrantParameters) (grantType, error) {
 	pc := len(gp.Privileges)
@@ -149,6 +232,10 @@ func identifyGrantType(gp v1alpha1.GrantParameters) (grantType, error) {
 			return "", errors.New(errMemberOfWithDatabaseOrPrivileges)
 		}
 		return roleMember, nil
+	}
+
+	if gp.Schema != nil {
+		return roleSchema, nil
 	}
 
 	if gp.Database == nil {
@@ -217,6 +304,9 @@ func selectGrantQuery(gp v1alpha1.GrantParameters, q *xsql.Query) error {
 			pq.Array(sp),
 		}
 		return nil
+
+	case roleSchema:
+		return nil
 	}
 	return errors.New(errUnknownGrant)
 }
@@ -275,6 +365,22 @@ func createGrantQueries(gp v1alpha1.GrantParameters, ql *[]xsql.Query) error { /
 				withOption(gp.WithOption),
 			)},
 		)
+		return nil
+	case roleSchema:
+		if gp.Database == nil || gp.Schema == nil || gp.Role == nil || len(gp.Privileges) < 1 {
+			return errors.Errorf(errInvalidParams, roleDatabase)
+		}
+
+		gt, gtErr := identifySchemaGrant(gp.Privileges)
+
+		if gtErr != nil {
+			return gtErr
+		}
+
+		sc := *gp.Schema
+		ro := *gp.Role
+
+		*ql = append(*ql, grantToSchema(gt, sc, ro)...)
 		return nil
 	}
 	return errors.New(errUnknownGrant)

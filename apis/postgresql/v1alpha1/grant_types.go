@@ -98,6 +98,10 @@ type GrantParameters struct {
 	// +optional
 	Database *string `json:"database,omitempty"`
 
+	// Schema this grant is for.
+	// +optional
+	Schema *string `json:"schema,omitempty"`
+
 	// DatabaseRef references the database object this grant it for.
 	// +immutable
 	// +optional
