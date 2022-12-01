@@ -419,6 +419,52 @@ func TestCreate(t *testing.T) {
 				err: nil,
 			},
 		},
+		"SuccessSchema": {
+			reason: "No error should be returned when we successfully create a grant",
+			fields: fields{
+				db: &mockDB{
+					MockExecTx: func(ctx context.Context, ql []xsql.Query) error { return nil },
+				},
+			},
+			args: args{
+				mg: &v1alpha1.Grant{
+					Spec: v1alpha1.GrantSpec{
+						ForProvider: v1alpha1.GrantParameters{
+							Database:   pointer.StringPtr("test-example"),
+							Role:       pointer.StringPtr("test-example"),
+							Schema:     pointer.StringPtr("test-example"),
+							Privileges: v1alpha1.GrantPrivileges{"ALL"},
+						},
+					},
+				},
+			},
+			want: want{
+				err: nil,
+			},
+		},
+		"ErrNoSchemaRoleValid": {
+			reason: "No error should be returned when we successfully create a grant",
+			fields: fields{
+				db: &mockDB{
+					MockExecTx: func(ctx context.Context, ql []xsql.Query) error { return nil },
+				},
+			},
+			args: args{
+				mg: &v1alpha1.Grant{
+					Spec: v1alpha1.GrantSpec{
+						ForProvider: v1alpha1.GrantParameters{
+							Database:   pointer.StringPtr("test-example"),
+							Role:       pointer.StringPtr("test-example"),
+							Schema:     pointer.StringPtr("test-example"),
+							Privileges: v1alpha1.GrantPrivileges{"CREATE"},
+						},
+					},
+				},
+			},
+			want: want{
+				err: errors.Wrap(errors.New(errNoExistingSchemaPrivilege), errCreateGrant),
+			},
+		},
 	}
 
 	for name, tc := range cases {
