@@ -306,6 +306,18 @@ func selectGrantQuery(gp v1alpha1.GrantParameters, q *xsql.Query) error {
 		return nil
 
 	case roleSchema:
+		ao := gp.WithOption != nil && *gp.WithOption == v1alpha1.GrantOptionAdmin
+		q.String = "SELECT EXISTS(SELECT 1 FROM pg_auth_members m " +
+			"INNER JOIN pg_roles mo ON m.roleid = mo.oid " +
+			"INNER JOIN pg_roles r ON m.member = r.oid " +
+			"WHERE r.rolname=$1 AND mo.rolname=$2 AND " +
+			"m.admin_option = $3)"
+
+		q.Parameters = []interface{}{
+			gp.Role,
+			gp.MemberOf,
+			ao,
+		}
 		return nil
 	}
 	return errors.New(errUnknownGrant)
@@ -367,7 +379,7 @@ func createGrantQueries(gp v1alpha1.GrantParameters, ql *[]xsql.Query) error { /
 		)
 		return nil
 	case roleSchema:
-		if gp.Database == nil || gp.Schema == nil || gp.Role == nil || len(gp.Privileges) < 1 {
+		if gp.Schema == nil || gp.Role == nil || len(gp.Privileges) < 1 {
 			return errors.Errorf(errInvalidParams, roleDatabase)
 		}
 
