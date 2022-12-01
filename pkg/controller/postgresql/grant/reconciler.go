@@ -144,10 +144,10 @@ const (
 
 func grantToSchema(grantType v1alpha1.GrantPrivilege, schema string, role string) []xsql.Query {
 	if grantType == allSchemaPrivilege {
-		addAllToSchema(schema, role)
+		return addAllToSchema(schema, role)
 	}
 	if grantType == readOnlySchemaPrivilege {
-		addReadOnlyToSchema(schema, role)
+		return addReadOnlyToSchema(schema, role)
 	}
 
 	return []xsql.Query{}
