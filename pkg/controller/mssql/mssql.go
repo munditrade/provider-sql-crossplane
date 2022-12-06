@@ -17,14 +17,14 @@ limitations under the License.
 package mssql
 
 import (
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/grant"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mssql/grant"
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/config"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/database"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql/user"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mssql/config"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mssql/database"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mssql/user"
 )
 
 // Setup creates all MSSQL controllers with the supplied logger and adds

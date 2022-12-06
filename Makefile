@@ -1,7 +1,7 @@
 # ====================================================================================
 # Setup Project
-PROJECT_NAME := provider-sql
-PROJECT_REPO := github.com/crossplane-contrib/$(PROJECT_NAME)
+PROJECT_NAME := provider-sql-crossplane
+PROJECT_REPO := github.com/munditrade/$(PROJECT_NAME)
 
 PLATFORMS ?= linux_amd64 linux_arm64
 -include build/makelib/common.mk
@@ -98,6 +98,31 @@ dev-clean: $(KIND) $(KUBECTL)
 	@$(INFO) Deleting kind cluster
 	@$(KIND) delete cluster --name=$(PROJECT_NAME)-dev
 
+
+# This target prepares repo for your provider by replacing all "template"
+# occurrences with your provider name.
+# This target can only be run once, if you want to rerun for some reason,
+# consider stashing/resetting your git state.
+# Arguments:
+#   provider: Camel case name of your provider, e.g. GitHub, PlanetScale
+provider.prepare:
+	@[ "${provider}" ] || ( echo "argument \"provider\" is not set"; exit 1 )
+	@PROVIDER=$(provider) ./hack/helpers/prepare.sh
+
+# This target adds a new api type and its controller.
+# You would still need to register new api in "apis/<provider>.go" and
+# controller in "internal/controller/<provider>.go".
+# Arguments:
+#   provider: Camel case name of your provider, e.g. GitHub, PlanetScale
+#   group: API group for the type you want to add.
+#   kind: Kind of the type you want to add
+#	apiversion: API version of the type you want to add. Optional and defaults to "v1alpha1"
+provider.addtype: $(GOMPLATE)
+	@[ "${provider}" ] || ( echo "argument \"provider\" is not set"; exit 1 )
+	@[ "${group}" ] || ( echo "argument \"group\" is not set"; exit 1 )
+	@[ "${kind}" ] || ( echo "argument \"kind\" is not set"; exit 1 )
+	@PROVIDER=$(provider) GROUP=$(group) KIND=$(kind) APIVERSION=$(apiversion) ./hack/helpers/addtype.sh
+
 .PHONY: submodules fallthrough test-integration run crds.clean dev dev-clean
 
 # ====================================================================================
@@ -112,6 +137,7 @@ endef
 # The reason CROSSPLANE_MAKE_HELP is used instead of CROSSPLANE_HELP is because the crossplane
 # binary will try to use CROSSPLANE_HELP if it is set, and this is for something different.
 export CROSSPLANE_MAKE_HELP
+
 
 crossplane.help:
 	@echo "$$CROSSPLANE_MAKE_HELP"

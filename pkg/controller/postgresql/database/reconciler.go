@@ -39,10 +39,10 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 
-	"github.com/crossplane-contrib/provider-sql/apis/postgresql/v1alpha1"
-	"github.com/crossplane-contrib/provider-sql/pkg/clients"
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/postgresql"
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/xsql"
+	"github.com/munditrade/provider-sql-crossplane/apis/postgresql/v1alpha1"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/postgresql"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/xsql"
 )
 
 const (

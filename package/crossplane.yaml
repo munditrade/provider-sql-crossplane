@@ -6,7 +6,7 @@ metadata:
     descriptionShort: |
       The SQL Crossplane provider enables management of SQL servers.
     meta.crossplane.io/maintainer: Crossplane Maintainers <info@crossplane.io>
-    meta.crossplane.io/source: github.com/crossplane-contrib/provider-sql
+    meta.crossplane.io/source: github.com/munditrade/provider-sql-crossplane
     meta.crossplane.io/license: Apache-2.0
     meta.crossplane.io/description: |
       The SQL Crossplane provider enables resource management of SQL servers.
@@ -14,10 +14,10 @@ metadata:
     meta.crossplane.io/readme: |
       `provider-sql` is a Crossplane Provider that enables management of SQL
       servers. Available resources and their fields can be found in the [CRD
-      Docs](https://doc.crds.dev/github.com/crossplane-contrib/provider-sql).
+      Docs](https://doc.crds.dev/github.com/munditrade/provider-sql-crossplane).
 
       If you encounter an issue please reach out on [slack.crossplane.io](https://slack.crossplane.io)
-      and create an issue at [crossplane-contrib/provider-sql](https://github.com/crossplane-contrib/provider-sql)
+      and create an issue at [crossplane-contrib/provider-sql](https://github.com/munditrade/provider-sql-crossplane)
     friendly-name.meta.crossplane.io: Provider SQL
     friendly-group-name.meta.crossplane.io/mysql.sql.crossplane.io: MySQL
     friendly-group-name.meta.crossplane.io/postgresql.sql.crossplane.io: PostgreSQL
@@ -31,4 +31,4 @@ metadata:
     friendly-kind-name.meta.crossplane.io/user.mysql.sql.crossplane.io: User
 spec:
   controller:
-    image: crossplane/provider-sql-controller:VERSION
+    image: gcr.io/prj-mundi-infra-services/provider-sql-controller:VERSION
