@@ -1,7 +1,7 @@
 apiVersion: meta.pkg.crossplane.io/v1alpha1
 kind: Provider
 metadata:
-  name: provider-sql
+  name: provider-sql-crossplane
   annotations:
     descriptionShort: |
       The SQL Crossplane provider enables management of SQL servers.
@@ -12,7 +12,7 @@ metadata:
       The SQL Crossplane provider enables resource management of SQL servers.
 
     meta.crossplane.io/readme: |
-      `provider-sql` is a Crossplane Provider that enables management of SQL
+      `provider-sql-crossplane` is a Crossplane Provider that enables management of SQL
       servers. Available resources and their fields can be found in the [CRD
       Docs](https://doc.crds.dev/github.com/munditrade/provider-sql-crossplane).
 
