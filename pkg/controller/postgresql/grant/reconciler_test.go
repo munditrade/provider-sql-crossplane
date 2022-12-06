@@ -22,9 +22,9 @@ import (
 
 	"testing"
 
-	"github.com/munditrade/provider-sql-crossplane/apis/postgresql/v1alpha1"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
+	"github.com/munditrade/provider-sql-crossplane/apis/postgresql/v1alpha1"
 	"github.com/pkg/errors"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/utils/pointer"
