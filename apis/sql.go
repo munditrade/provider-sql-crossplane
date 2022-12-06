@@ -20,9 +20,9 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	mssql "github.com/crossplane-contrib/provider-sql/apis/mssql/v1alpha1"
-	mysql "github.com/crossplane-contrib/provider-sql/apis/mysql/v1alpha1"
-	postgresql "github.com/crossplane-contrib/provider-sql/apis/postgresql/v1alpha1"
+	mssql "github.com/munditrade/provider-sql-crossplane/apis/mssql/v1alpha1"
+	mysql "github.com/munditrade/provider-sql-crossplane/apis/mysql/v1alpha1"
+	postgresql "github.com/munditrade/provider-sql-crossplane/apis/postgresql/v1alpha1"
 )
 
 func init() {

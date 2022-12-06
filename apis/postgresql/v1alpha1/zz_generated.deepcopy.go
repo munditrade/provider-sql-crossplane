@@ -402,6 +402,11 @@ func (in *GrantParameters) DeepCopyInto(out *GrantParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Schema != nil {
+		in, out := &in.Schema, &out.Schema
+		*out = new(string)
+		**out = **in
+	}
 	if in.DatabaseRef != nil {
 		in, out := &in.DatabaseRef, &out.DatabaseRef
 		*out = new(v1.Reference)

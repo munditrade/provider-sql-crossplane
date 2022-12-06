@@ -35,8 +35,8 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/crossplane/crossplane-runtime/pkg/test"
 
-	"github.com/crossplane-contrib/provider-sql/apis/mssql/v1alpha1"
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/xsql"
+	"github.com/munditrade/provider-sql-crossplane/apis/mssql/v1alpha1"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/xsql"
 )
 
 type mockDB struct {

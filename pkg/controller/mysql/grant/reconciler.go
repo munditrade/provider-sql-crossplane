@@ -38,9 +38,9 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 
-	"github.com/crossplane-contrib/provider-sql/apis/mysql/v1alpha1"
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/mysql"
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/xsql"
+	"github.com/munditrade/provider-sql-crossplane/apis/mysql/v1alpha1"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/mysql"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/xsql"
 )
 
 const (

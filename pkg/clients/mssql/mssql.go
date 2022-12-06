@@ -20,6 +20,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/xsql"
 	"net/url"
 	"strings"
 
@@ -27,8 +28,6 @@ import (
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/managed"
-
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/xsql"
 )
 
 const (

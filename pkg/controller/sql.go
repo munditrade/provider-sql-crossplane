@@ -17,13 +17,13 @@ limitations under the License.
 package controller
 
 import (
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mssql"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mysql"
 	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mssql"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mysql"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/postgresql"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/postgresql"
 )
 
 // Setup creates all PostgreSQL controllers with the supplied logger and adds

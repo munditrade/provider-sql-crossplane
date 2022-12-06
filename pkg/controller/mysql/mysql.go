@@ -21,10 +21,10 @@ import (
 
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mysql/config"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mysql/database"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mysql/grant"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller/mysql/user"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mysql/config"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mysql/database"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mysql/grant"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller/mysql/user"
 )
 
 // Setup creates all MySQL controllers with the supplied logger and adds

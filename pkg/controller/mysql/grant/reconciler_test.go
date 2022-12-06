@@ -23,7 +23,7 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/crossplane-contrib/provider-sql/apis/mysql/v1alpha1"
+	"github.com/munditrade/provider-sql-crossplane/apis/mysql/v1alpha1"
 	"github.com/go-sql-driver/mysql"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
@@ -37,7 +37,7 @@ import (
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/crossplane/crossplane-runtime/pkg/test"
 
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/xsql"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/xsql"
 )
 
 type mockDB struct {

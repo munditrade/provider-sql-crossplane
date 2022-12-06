@@ -30,8 +30,8 @@ import (
 
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
 
-	"github.com/crossplane-contrib/provider-sql/apis"
-	"github.com/crossplane-contrib/provider-sql/pkg/controller"
+	"github.com/munditrade/provider-sql-crossplane/apis"
+	"github.com/munditrade/provider-sql-crossplane/pkg/controller"
 )
 
 func main() {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/crossplane-contrib/provider-sql/pkg/clients/xsql"
+	"github.com/munditrade/provider-sql-crossplane/pkg/clients/xsql"
 	"github.com/pkg/errors"
 
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"

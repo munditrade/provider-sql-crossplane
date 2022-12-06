@@ -1,4 +1,4 @@
-module github.com/crossplane-contrib/provider-sql
+module github.com/munditrade/provider-sql-crossplane
 
 go 1.18
 
@@ -11,7 +11,6 @@ require (
 	github.com/google/go-cmp v0.5.6
 	github.com/lib/pq v1.8.0
 	github.com/pkg/errors v0.9.1
-	github.com/stretchr/testify v1.8.0 // indirect
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 	k8s.io/api v0.25.0
 	k8s.io/apimachinery v0.25.0
