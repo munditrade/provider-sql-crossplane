@@ -51,7 +51,7 @@ PACKAGE_CONTROLLER_IMAGE="${DOCKER_REGISTRY}/${PROJECT_NAME}-controller:${VERSIO
 K8S_CLUSTER="${K8S_CLUSTER:-${BUILD_REGISTRY}-inttests}"
 
 CROSSPLANE_NAMESPACE="crossplane-system"
-PACKAGE_NAME="provider-sql"
+PACKAGE_NAME="provider-sql-crossplane"
 
 # cleanup on exit
 if [ "$skipcleanup" != true ]; then
@@ -172,7 +172,7 @@ EOF
 echo "${INSTALL_YAML}" | "${KUBECTL}" apply -f -
 
 echo_step "waiting for provider to be installed"
-"${KUBECTL}" wait "provider.pkg.crossplane.io/${PACKAGE_NAME}" --for=condition=healthy --timeout=60s
+"${KUBECTL}" wait "provider.pkg.crossplane.io/${PACKAGE_NAME}" --for=condition=healthy --timeout=180s
 
 
 # printing the cache dir contents can be useful for troubleshooting failures
