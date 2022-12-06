@@ -55,7 +55,7 @@ const (
 	errNoRole                    = "role not passed or could not be resolved"
 	errNoDatabase                = "database not passed or could not be resolved"
 	errNoPrivileges              = "privileges not passed"
-	errNoExistingSchemaPrivilege = "no exist schema privilege only support ALL and READ_ONLY"
+	errNoExistingSchemaPrivilege = "no exist schema privilege only support ALL and READONLY"
 	errUnknownGrant              = "cannot identify grant type based on passed params"
 
 	errInvalidParams = "invalid parameters for grant type %s"
@@ -139,7 +139,7 @@ const (
 	roleDatabase            grantType = "ROLE_DATABASE"
 	roleSchema              grantType = "ROLE_SCHEMA"
 	allSchemaPrivilege                = "ALL"
-	readOnlySchemaPrivilege           = "READ_ONLY"
+	readOnlySchemaPrivilege           = "READONLY"
 )
 
 func grantToSchema(grantType v1alpha1.GrantPrivilege, schema string, role string) []xsql.Query {
@@ -158,7 +158,7 @@ func addReadOnlyToSchema(schema string, role string) []xsql.Query {
 	sc := pq.QuoteIdentifier(schema)
 
 	return []xsql.Query{
-		{String: fmt.Sprintf("GRANT USAGE ON SCHEMA %s” TO %s",
+		{String: fmt.Sprintf("GRANT USAGE ON SCHEMA %s TO %s",
 			sc,
 			ro,
 		)},
